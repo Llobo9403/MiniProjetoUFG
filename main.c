@@ -7,6 +7,7 @@ int login ()
 {
     int response = 0;
     char userT[20], passwordT[10];
+
     printf("Digite seu nome de usuario: ");
     fgets(userT,20,stdin);
 
@@ -22,16 +23,13 @@ int login ()
 void play(int check)
 {
     if(check == 0)
-    {
-        do
-        {
-            printf("\nUsuario ou senha incorretos!\n\n");
-            check = login();
-        }while(check != 1);
+    {       
+        printf("\nUsuario ou senha incorretos!\n\n");
+        play(login());        
     } 
     else 
     {
-        printf("Conta Bancaria*\n");
+        printf("Bem-vindo a sua conta bancaria, %s",username);
     }
 }
 
@@ -39,7 +37,7 @@ void createUser()
 {
     printf("Ola!\nBem-vindo ao nosso programinha extremamente util.\nPrepare-se para uma experiencia totalmente imersiva e divertia!(confia)\n");
 
-    printf("\nPrimeiramente, informe seu primeiro e segundo nome: ");
+    printf("\nInicialmente, informe seu primeiro e segundo nome: ");
     fgets(username,65,stdin);
     printf("Para dar continuidade, por favor crie um nome de usuario para que seja feito o login: ");
     fgets(user,20,stdin);
