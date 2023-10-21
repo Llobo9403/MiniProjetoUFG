@@ -1,7 +1,7 @@
 #include<stdio.h>
 #include<string.h>
 char username[65], password[10], user[20];
-
+double balance;
 
 //Função responsavel por validar o login.
 int login () 
