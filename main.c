@@ -3,6 +3,7 @@
 #include<math.h>
 char username[65], password[10], user[20];
 double balance;
+double totalContribution = 0, totalIncome = 0;
 
 //Função responsavel por validar o login.
 int login () 
@@ -75,9 +76,9 @@ void createUser()
 
 
 
-double totalContribution = 0, totalIncome = 0;
 
 
+//Fução que calcula o valor com juros nominal desconsiderando a inflação
 double nominalInterest(double time, double value, double contribution, double rate)
 {
     double income = 0, amount = 0;
@@ -96,6 +97,7 @@ double nominalInterest(double time, double value, double contribution, double ra
     return value;
 }
 
+//Função que calcula o valor com juros sob efeito da inflação 
 double inflationValue(double time, double value, double contribution, double inflation, double rate)
 {
     double income = 0, amount = 0, totalInflation = 0;
@@ -115,19 +117,32 @@ double inflationValue(double time, double value, double contribution, double inf
 // Lembrar de criar uma validação para os valores
 void investment() 
 {
-    double time, value, rate, contribution, inflation;
+    double time = 0, value = 0, rate = 0, contribution = 0, inflation = 0;
     double nominalValue, realValue, inflationValueMoney;
     
-    printf("Insira o periodo: ");
-    scanf("%lf", &time);
-    printf("Insira o montante inicial: ");
-    scanf("%lf", &value);
-    printf("Insira o valor de aporte mensal: ");
-    scanf("%lf", &contribution);
-    printf("Insira a taxa de juros: ");
-    scanf("%lf", &rate);
-    printf("Insira a taxa de inflação mensal: ");
-    scanf("%lf", &inflation); 
+    //Validação de inputs
+    do {
+        printf("Insira o periodo: ");
+        scanf("%lf", &time);
+    } while(time <= 0 || time != (int)time);
+
+    do {
+        printf("Insira o montante inicial: ");
+        scanf("%lf", &value);
+    } while(value < 0);
+
+    do {
+        printf("Insira o valor de aporte mensal: ");
+        scanf("%lf", &contribution);
+    } while(contribution < 0);
+
+    do {
+        printf("Insira a taxa de juros: ");
+        scanf("%lf", &rate);
+    } while(rate <= 0);
+
+        printf("Insira a taxa de inflação mensal: ");
+        scanf("%lf", &inflation); 
 
     inflationValueMoney = inflationValue(time,value,contribution, inflation, rate);
     nominalValue =  nominalInterest(time,value,contribution, rate);
