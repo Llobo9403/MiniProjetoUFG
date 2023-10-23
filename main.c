@@ -1,5 +1,6 @@
 #include<stdio.h>
 #include<string.h>
+#include<math.h>
 char username[65], password[10], user[20];
 double balance;
 
@@ -74,10 +75,72 @@ void createUser()
 
 
 
+double totalContribution = 0, totalIncome = 0;
 
 
+double nominalInterest(double time, double value, double contribution, double rate)
+{
+    double income = 0, amount = 0;
+    totalContribution = 0;
+    totalIncome = 0;
+
+    for(int i = 1; i <= time; i++)
+    {
+        income = value*((rate/100)/12);
+        amount = value + income + contribution;
+        totalIncome += income;
+        totalContribution += contribution;
+        value = amount;
+    }
+
+    return value;
+}
+
+double inflationValue(double time, double value, double contribution, double inflation, double rate)
+{
+    double income = 0, amount = 0, totalInflation = 0;
+
+    for(int i = 1; i <= time; i++)
+    {
+        income = value*((rate/100)/12);
+        totalInflation += value*(inflation/100);
+        amount = value + income + contribution;
+        value = amount;
+    }
+
+    return totalInflation;
+}
 
 
+// Lembrar de criar uma validação para os valores
+void investment() 
+{
+    double time, value, rate, contribution, inflation;
+    double nominalValue, realValue, inflationValueMoney;
+    
+    printf("Insira o periodo: ");
+    scanf("%lf", &time);
+    printf("Insira o montante inicial: ");
+    scanf("%lf", &value);
+    printf("Insira o valor de aporte mensal: ");
+    scanf("%lf", &contribution);
+    printf("Insira a taxa de juros: ");
+    scanf("%lf", &rate);
+    printf("Insira a taxa de inflação mensal: ");
+    scanf("%lf", &inflation); 
+
+    inflationValueMoney = inflationValue(time,value,contribution, inflation, rate);
+    nominalValue =  nominalInterest(time,value,contribution, rate);
+    realValue = nominalValue - inflationValueMoney;
+
+    printf("\n\n\n###################   RESULTADOS   #####################\n\n");
+    printf("Montante inicial: R$ %.2f", value);
+    printf("\nTotal investido: R$ %.2f", totalContribution);
+    printf("\nTotal de Rendimentos: R$ %.2f\n\n", totalIncome);
+    printf("Montante final: R$ %.2f", nominalValue);
+    printf("\nValor reajustado: R$ %.2f\n\n", realValue);
+    
+}
 
 
 //***************************************************************************************************
@@ -111,6 +174,7 @@ void createUser()
 int main()
 {
     //Chamando minha função para criar um usuario.
-    createUser();
+    //createUser();
+    investment();
     return 0;
 }
