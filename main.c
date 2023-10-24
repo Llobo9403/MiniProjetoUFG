@@ -2,7 +2,7 @@
 #include<string.h>
 #include<math.h>
 char username[65], password[10], user[20];
-double balance;
+double balance = 100000;
 double totalContribution = 0, totalIncome = 0;
 
 //Função responsavel por validar o login.
@@ -36,7 +36,7 @@ void play(int check)
     } 
     else 
     {
-        printf("Bem-vindo a sua conta bancaria, %s",username);
+        printf("\n\nBem-vindo a sua conta bancaria, %s",username);
     }
 }
 
@@ -54,7 +54,7 @@ void createUser()
     printf("Perfeito! Agora crie uma senha para que você possa acessar a sua conta: ");
     fgets(password,10,stdin);
 
-    printf("\nShow! Aguarde um momento, o sistema esta iniciando...\n");
+    printf("\nShow! Aguarde um momento, o sistema esta iniciando...\n\n");
 
     //Isso e possivel pois a função login retorna um numero inteiro
     play(login());
@@ -77,8 +77,8 @@ void createUser()
 
 
 
-
-//Fução que calcula o valor com juros nominal desconsiderando a inflação
+/*------    FUNCTIONS OF CASE ONE  ------
+Fução que calcula o valor com juros nominal desconsiderando a inflação*/
 double nominalInterest(double time, double value, double contribution, double rate)
 {
     double income = 0, amount = 0;
@@ -114,15 +114,20 @@ double inflationValue(double time, double value, double contribution, double inf
 }
 
 
-// Lembrar de criar uma validação para os valores
-void investment() 
+
+//-------- CASE ONE --------
+
+
+void caseOneInvestment()
 {
     double time = 0, value = 0, rate = 0, contribution = 0, inflation = 0;
     double nominalValue, realValue, inflationValueMoney;
     
+    printf("\n\n\n-------------------   Investimento c/ prazo   -------------------");
+
     //Validação de inputs
     do {
-        printf("Insira o periodo: ");
+        printf("\n\nInsira o periodo: ");
         scanf("%lf", &time);
     } while(time <= 0 || time != (int)time);
 
@@ -154,8 +159,139 @@ void investment()
     printf("\nTotal de Rendimentos: R$ %.2f\n\n", totalIncome);
     printf("Montante final: R$ %.2f", nominalValue);
     printf("\nValor reajustado: R$ %.2f\n\n", realValue);
-    
+    printf("_________________________________________________________");
+
+    if(value == balance)
+        balance = nominalValue;
+
+    //Ajeitar bug do numero não arredondado
+    printf("\n%f",balance);
 }
+
+
+
+/*------    FUNCTIONS OF CASE TWO    ------*/
+
+int dreamInvestment(double value, double contribution, double rate)
+{
+    int time = 0;
+    while(balance <= value)
+    {
+        balance = balance*(1+(rate/100)/12) + contribution;
+        time++;
+    }
+
+    return time;
+}
+
+
+//-------- CASE TWO --------
+
+void caseTwoInvestment()
+{
+    double value, rate, contribution, inflation = 0;
+    int time, answer;
+
+    printf("\n\n\n-------------------   Investimento sonhador   -------------------");
+
+    printf("\n\n\nInsira o valor voce deseja alcançar: ");
+    scanf("%lf",&value);
+
+    printf("Insira o valor que deseja investir: ");
+    scanf("%lf",&contribution);
+
+    printf("Insira a taxa de juros: ");
+    scanf("%lf",&rate);
+
+    printf("\n\nDeseja calcular a inflação(0/1)? ");
+    scanf("%d",&answer);
+
+    if(answer == 0)
+    {
+        printf("\n\nInforme a taxa da inflação: ");
+        scanf("%lf",&inflation);
+    }
+
+    double newBalance = balance;
+
+    time = dreamInvestment(value, contribution, rate);
+    inflation = balance - inflationValue(time,newBalance,contribution, inflation, rate);
+    printf("\n\n\n###################   RESULTADOS   #####################\n\n");
+    printf("%d meses seriam necessarios para alcançar a quantia desejada.\n", time);
+    printf("Ao final desse periodo você estara com R$ %.2f.\n",balance);
+    
+    if(answer == 0)
+        printf("Ou R$ %.2f ajustando com a inflação.\n", inflation);
+    
+    printf("\n\n_________________________________________________________");
+
+}
+
+void caseTreeInvestment()
+{
+    double finalValue = balance;
+
+    printf("\n\n\n-------------------   Investimento generico   -------------------\n\n\n");
+
+    for(int i = 1; i <= 1200; i++)
+    {
+        finalValue *= 1+ 0.08/12;
+
+        if(i%10 == 0 && i%12 == 0)
+        {
+            printf("%d anos = R$ %.2f\n",(i/12), finalValue);
+        }
+    }
+
+    printf("\n\nCom base no seu dinheiro em conta e levando em consideração\na taxa de juros real atualmente '8%% ao ano', esses serão seus\nresultados nos proximos anos.\n");
+    printf("\n\n_________________________________________________________");
+}
+
+int visit = 0;
+void investment() 
+{
+    int option, back = 0;
+  
+    if(visit == 0)    
+    {
+        printf("Ola, %s\nEsta e a nossa area de investimento.\nAqui voce podera simular diversos investimentos a depender da sua necessidade.\n\nLogo abaixo estão algumas opções, por favor escolha alguma que te satisfaça.", username);
+        visit = 1;
+    }
+    printf("\n\n\n-------------------   Investimentos   -------------------");
+
+    printf("\n\n\n1 - Investimento c/ prazo.              |  Saldo Atual: R$ %.2f  |\n\n2 - Investimento sonhador.\n\n3 - Investimento generico.\n\n4 - Voltar.\n\n\n",balance);
+
+    do {
+        printf("Digite o numero da opção: ");
+        scanf("%d", &option);
+
+        switch(option)
+        {
+            case 1: 
+                caseOneInvestment();
+                break;
+            case 2: 
+                caseTwoInvestment();
+                break;
+            case 3: 
+                caseTreeInvestment();
+                break;
+            case 4: 
+                //Volta para o menu inicial
+                printf("\nVoltando ao menu inicial...\n");
+                back = 1;
+                break;
+            default: 
+                printf("Opção não valida!\n");
+                break;
+        }
+    } while(!(option == 1 || option == 2 || option == 3 || option == 4));
+
+    if(back == 0)
+        investment();
+
+}
+
 
 
 //***************************************************************************************************
