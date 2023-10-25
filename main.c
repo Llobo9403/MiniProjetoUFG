@@ -7,6 +7,7 @@
 char username[65], password[10], user[20];
 double balance = 0;
 double totalContribution = 0, totalIncome = 0;
+int accountNumber;
 
 //Função responsavel por validar o login.
 int login () 
@@ -39,7 +40,8 @@ void play(int check)
     } 
     else 
     {
-        printf("\n\nBem-vindo a sua conta bancaria, %s",username);
+        printf("\n\nBem-vindo a sua conta bancaria, %s\n\n",username);
+        accountNumber = rand() % 9000 + 1000;
     }
 }
 
@@ -75,66 +77,55 @@ int deposit();
 int saque();
 
 //onde vai ficar o layout, scanf e chamar as funcoes
-int banco() {
+int banco() 
+{
 	int opcao;
 
 	printf("========================================================");
-	printf("\n*                    BANCO UFG                       *\n");
-	printf("========================================================\n");
-    printf("1. Saque\n\n");
-    printf("2. Depósito\n\n");
-    printf("3. Investimento\n\n");
-    printf("4. Conversor de Moedas\n\n");
+	printf("\n*                      BANCO UFG                       *\n");
+	printf("========================================================\n\n");
+    printf("        Nº %d           Usuario: %s",accountNumber ,username);
+	printf("________________________________________________________\n\n");
+    printf("1. Depósito                   |  Saldo Atual: R$ %.2f  |\n\n",balance);
+    printf("2. Investimento\n\n");
+    printf("3. Saque\n\n");
+    printf("4. Conversor de Moedas\n\n    *\n    *\n    *\n    *\n");
+    printf("\n5. Sair\n\n");
     printf("=========================================================\n");
-    printf("Escolha uma opção: ");
 
-	while((scanf("%d",&opcao))!=EOF){
+    do {
+        printf("Escolha uma opção: ");
+        scanf("%d", &opcao);
 
-		if(opcao==1) saque();
+		if(opcao==1) 
+        {
+            deposit();
+        } 
+        else if(opcao==2) 
+        {
+            investment();
+		} 
+        else if(opcao==3) 
+        {
+            saque();
+		} 
+        else if(opcao==4) 
+        {
+            //Conversor();
+            printf("\n\nEm desenvolvimento!\n\n");
+		} 
+        else if(opcao==5) 
+        {
+            break;
+        } else 
+        {   
+            printf("\n\nOpçaõ Invalida!\n\n");
+        }
 
-		if(opcao==2) deposit();
+    } while(opcao!=5);
 
-		if(opcao==3) investment();
-		
-		//if(opcao==4) Conversor();
-		
-		//if(opcao==5) TelaInicial();
-
-    }
 return 0;
 }
-
-// SAQUE --------------------------------------------------------------
-
-
-int saque()
-{
-    double quantia;
-    printf("informe a quantia desejada para o saque: ");
-    scanf("%lf", &quantia);
-        
-    if(quantia <= 0)
-    {
-        
-        printf("A quantia deve ser maior que zero e positiva\n");
-        
-    } else if (quantia > balance)
-    {
-        
-          printf("Saldo insuficiente!\n");
-    } else
-    {
-          
-          balance -= quantia;
-          printf("Saque de %.2lf realizado com sucesso!\nSaldo Atual: %.2lf\n", quantia, balance);   
-    }
-
-    banco();    
-    return 0;
-
-}
-
-
 
 
 
@@ -143,31 +134,11 @@ int saque()
 
 
 #define MAX_DEPOSIT 1000 // Definindo o valor máximo para depósito
-#define NUM_CONTAS 10 // Número de contas no banco
-
-// Estrutura para representar uma conta bancária
-typedef struct {
-    int numero_conta;
-    double saldo;
-    char nome_usuario[50];
-} Conta;
-
-// Lista de contas
-Conta contas[NUM_CONTAS];
-
-// Função para verificar se a conta existe
-int conta_existe(int numero_conta) {
-    for (int i = 0; i < NUM_CONTAS; i++) {
-        if (contas[i].numero_conta == numero_conta) {
-            return i; // Retorna o índice da conta se ela existir
-        }
-    }
-    return -1; // Retorna -1 se a conta não existir
-}
 
 // Função para realizar o depósito
 double deposito(double saldo, double valor) {
-    return saldo + valor; // Adiciona o valor ao saldo e retorna o novo saldo
+    saldo += valor;
+    return saldo; // Adiciona o valor ao saldo e retorna o novo saldo
 }
 
 // Função para gerar um código de verificação aleatório
@@ -178,11 +149,14 @@ int gerar_codigo_verificacao() {
 
 // Função para imprimir o recibo do depósito
 void imprimir_recibo(int numero_conta, double valor, double saldo, int codigo_verificacao) {
-    printf("Comprovante de Depósito:\n");
-    printf("Número da Conta: %d\n", numero_conta);
-    printf("Valor Depositado: %.2f\n", valor);
-    printf("Saldo Atual: %.2f\n", saldo);
-    printf("Código de Verificação: %d\n", codigo_verificacao);
+    printf("\n\n******************************************\n\n");
+    printf("    Comprovante de Depósito\n\n");
+    printf("       - Número da Conta: %d\n", numero_conta);
+    printf("       - Valor Depositado: %.2f\n", valor);
+    printf("       - Saldo Atual: %.2f\n", saldo);
+    printf("    ----------------------------------\n");
+    printf("        Código de Verificação: %d\n", codigo_verificacao);
+    printf("\n__________________________________________\n\n");
 }
 
 int deposit() {
@@ -192,12 +166,13 @@ int deposit() {
     int codigo_verificacao; // Código de verificação
     int check = 0;
 
+    printf("\n\n\n-------------------   Depósito   -------------------\n\n");
     printf("Digite o número da conta: ");
     scanf("%d", &numero_conta);
 
-    indice_conta = conta_existe(numero_conta); // Verifica se a conta existe
+    indice_conta = accountNumber; // recebe o numero da conta
 
-    if (indice_conta != -1) 
+    if (indice_conta == numero_conta) 
     { // Se a conta existir...
 
         do {
@@ -206,22 +181,21 @@ int deposit() {
 
             if (valor <= MAX_DEPOSIT) 
             { 
-                contas[indice_conta].saldo = deposito(contas[indice_conta].saldo, valor);
                 balance += valor;
                 codigo_verificacao = gerar_codigo_verificacao();
-                imprimir_recibo(numero_conta, balance, contas[indice_conta].saldo, codigo_verificacao);
+                imprimir_recibo(numero_conta, valor, balance, codigo_verificacao);
                 check = 0;
             } else 
             {
-                printf("O valor informado é maior que o limite máximo de %d reais.\n", MAX_DEPOSIT);
-                printf("Por favor, digite outro valor ou divida o depósito em partes menores.\n");
+                printf("\n\nO valor informado é maior que o limite máximo de %d reais.\n", MAX_DEPOSIT);
+                printf("Por favor, digite outro valor ou divida o depósito em partes menores.\n\n");
                 check = 1;
             }
         }while(check == 1);
     } else 
     {
-        printf("A conta informada não existe.\n");
-        printf("Por favor, digite outro número ou crie uma nova conta.\n");
+        printf("\n\nA conta informada não existe.\n");
+        printf("Por favor, digite outro número ou crie uma nova conta.\n\n");
         deposit();
     }
 
@@ -231,6 +205,47 @@ int deposit() {
 
 
 
+// SAQUE --------------------------------------------------------------
+
+
+void imprimir_recibo_saque(int numero_conta, double valor, double saldo, int codigo_verificacao) {
+    printf("\n\n******************************************\n\n");
+    printf("    Comprovante de Saque\n\n");
+    printf("       - Número da Conta: %d\n", numero_conta);
+    printf("       - Valor de Saque: %.2f\n", valor);
+    printf("       - Saldo Atual: %.2f\n", saldo);
+    printf("    ----------------------------------\n");
+    printf("        Código de Verificação: %d\n", codigo_verificacao);
+    printf("\n__________________________________________\n\n");
+}
+
+
+int saque()
+{
+    double quantia;
+    printf("\n\n\n-------------------   Saque   -------------------\n\n");
+    printf("Informe a quantia desejada para o saque: ");
+    scanf("%lf", &quantia);
+        
+    if(quantia <= 0)
+    {
+        
+        printf("\n\nA quantia deve ser maior que zero!\n\n");
+        
+    } else if (quantia > balance)
+    {
+        
+          printf("\n\nSaldo insuficiente!\n\n");
+    } else
+    {
+          balance -= quantia;
+          imprimir_recibo_saque(0, quantia, balance, gerar_codigo_verificacao());
+    }
+
+    banco();    
+    return 0;
+
+}
 
 
 
@@ -324,11 +339,6 @@ void caseOneInvestment()
     printf("\nValor reajustado: R$ %.2f\n\n", realValue);
     printf("_________________________________________________________");
 
-    if(value == balance)
-        balance = nominalValue;
-
-    //Ajeitar bug do numero não arredondado
-    printf("\n%f",balance);
 }
 
 
@@ -390,6 +400,10 @@ void caseTwoInvestment()
 
 }
 
+
+
+
+
 void caseTreeInvestment()
 {
     double finalValue = balance;
@@ -409,6 +423,10 @@ void caseTreeInvestment()
     printf("\n\nCom base no seu dinheiro em conta e levando em consideração\na taxa de juros real atualmente '8%% ao ano', esses serão seus\nresultados nos proximos anos.\n");
     printf("\n\n_________________________________________________________");
 }
+
+
+
+
 
 int visit = 0;
 void investment() 
@@ -490,7 +508,7 @@ void investment()
 int main()
 {
     //Chamando minha função para criar um usuario.
-    //createUser();
+    createUser();
     banco();
     return 0;
 }
