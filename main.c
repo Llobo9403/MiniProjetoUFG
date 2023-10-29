@@ -65,7 +65,7 @@ void createUser()
     play(login());
 }
 
-/*+++++++++++++++++++++++++++++++++++++++++++++++===================================================*/
+/*==================================================================================================*/
 /*                                               Conversor                                          */
 
 
@@ -190,14 +190,14 @@ int vendausd(){
     double valorvenda, dolares;
 
     printf("Quanto você deseja converter?\n\n\n");
-    scanf("%lf", &valorvenda);
-        if(valorvenda<=dolares){
+    scanf("%lf", &dolares);
+        if(valorvenda<=10000){
             valorvenda = dolares*5.03;
         }
         else{
             printf("Quantia excede o Saldo atual, favor solicite outro valor.\n");
         }
-        return dolares;
+        return valorvenda;
 }
 
 /*Função para a venda de Euros*/
@@ -206,14 +206,14 @@ int vendaeur(){
     double valorvenda, euros;
 
     printf("Quanto você deseja converter?\n\n\n");
-    scanf("%lf", &valorvenda);
-        if(valorvenda<=euros){
+    scanf("%lf", &euros);
+        if(valorvenda<=10000){
             valorvenda = euros*5.28;
         }
         else{
             printf("Quantia excede o Saldo atual, favor solicite outro valor.\n");
         }
-        return euros;
+        return valorvenda;
 }
 
 /*Função para a venda de Iene Japonês*/
@@ -222,14 +222,14 @@ int vendajpy(){
     double valorvenda, ienes;
 
     printf("Quanto você deseja converter?\n\n\n");
-    scanf("%lf", &valorvenda);
-        if(valorvenda<=ienes){
+    scanf("%lf", &ienes);
+        if(valorvenda<=100000){
             valorvenda = ienes*0.33;
         }
         else{
             printf("Quantia excede o Saldo atual, favor solicite outro valor.\n");
         }
-        return ienes;
+        return valorvenda;
 }
 
 /*Função para a venda de Libras*/
@@ -238,14 +238,14 @@ int vendagbp(){
     double valorvenda, libras;
 
     printf("Quanto você deseja converter?\n\n\n");
-    scanf("%lf", &valorvenda);
-        if(valorvenda<=libras){
+    scanf("%lf", &libras);
+        if(valorvenda<=10000){
             valorvenda = libras*6.06;
         }
         else{
             printf("Quantia excede o Saldo atual, favor solicite outro valor.\n");
         }
-        return libras;
+        return valorvenda;
 }
 
 /*Função para a venda de Francos*/
@@ -254,14 +254,14 @@ int vendachf(){
     double valorvenda, franco;
 
     printf("Quanto você deseja converter?\n\n\n");
-    scanf("%lf", &valorvenda);
-        if(valorvenda<=franco){
+    scanf("%lf", &franco);
+        if(valorvenda<=10000){
             valorvenda = franco*5.58;
         }
         else{
             printf("Quantia excede o Saldo atual, favor solicite outro valor.\n");
         }
-        return franco;
+        return valorvenda;
 }
 
 /*Função para a venda de Dólares Australianos*/
@@ -270,14 +270,14 @@ int vendaaud(){
     double valorvenda, dolaus;
 
     printf("Quanto você deseja converter?\n\n\n");
-    scanf("%lf", &valorvenda);
-        if(valorvenda<=dolaus){
+    scanf("%lf", &dolaus);
+        if(valorvenda<=10000){
             valorvenda = dolaus*3.16;
         }
         else{
             printf("Quantia excede o Saldo atual, favor solicite outro valor.\n");
         }
-        return dolaus;
+        return valorvenda;
 }
 
 /*Função para a venda de Dólares Australianos*/
@@ -286,58 +286,70 @@ int vendacad(){
     double valorvenda, dolcan;
 
     printf("Quanto você deseja converter?\n\n\n");
-    scanf("%lf", &valorvenda);
-        if(valorvenda<=dolcan){
+    scanf("%lf", &dolcan);
+        if(valorvenda<=10000){
             valorvenda = dolcan*3.63;
         }
         else{
             printf("Quantia excede o Saldo atual, favor solicite outro valor.\n");
         }
-        return dolcan;
+        return valorvenda;
 }
 
 
 /*Função para a Venda de moeda Extrangeira*/
 int venda(){
     int moeda;
-    double dolares, euros, ienes, libras, franco, dolaus, dolcad;
+    double valorvenda;
 
     printf("========================================================\n");
     printf("                 Venda de Moeda Extrangeira            \n");
     printf("========================================================\n\n\n");
     printf("Bem vindo! %s!\n\n\n", username);
-    printf("Aqui você poderá utilizar valores do seu saldo em \n moedas extrangeiras, para converter em Reais, confira os valores:\n\n\n");
-    printf("Dólar Americano (USD) - R$ 5,03...............| Digite 1\n");
+    printf("Aqui você poderá utilizar o valor do seu saldo para\ncomparar e estimar valores em moedas extrangeiras, confira o nosso catálogo:\n\n\n");    printf("Dólar Americano (USD) - R$ 5,03...............| Digite 1\n");
     printf("Euro (EUR) - R$ 5,28..........................| Digite 2\n");
     printf("Iene Japonês (JPY) - R$ 0,33..................| Digite 3\n");
     printf("Libra Esterlina (GBP) - R$ 6,06...............| Digite 4\n");
     printf("Franco Suíço (CHF) - R$ 5,58..................| Digite 5\n");
     printf("Dólar Australiano (AUD) - R$ 3,16.............| Digite 6\n");
     printf("Dólar Canadense (CAD) - R$ 3,63...............| Digite 7\n\n\n");
-    printf("Saldo em moedas estrangeiras:\nDólares Americanos: %.2lf USD\nEuros: %.2lf EUR\nIene Japonês: %.2lf JPY\nLibra Esterlina: %.2lf GBP\nFranco Suíço: %.2lf CHF\nDólar Australiano: %.2lf AUD\nDólar Canadense: %.2lf CAD\n\n\n", dolares, euros, ienes, libras, franco, dolaus, dolcad);
 
     scanf("%d", &moeda);
     
     if(moeda==1){
-        vendausd();
+        valorvenda = vendausd();
+        printf("%.2lf\n", valorvenda);
+        banco();
     }
     else if(moeda==2){
-        vendaeur();
+        valorvenda = vendaeur();
+        printf("%.2lf\n", valorvenda);
+        banco();
     }
     else if(moeda==3){
-        vendajpy();
+        valorvenda = jpy();
+        printf("%.2lf\n", valorvenda);
+        banco();
     }
     else if(moeda==4){
-        vendagbp();
+        valorvenda = vendagbp();
+        printf("%.2lf\n", valorvenda);
+        banco();
     }
     else if(moeda==5){
-        vendachf();
+        valorvenda = vendachf();
+        printf("%.2lf\n", valorvenda);
+        banco();
     }
     else if(moeda==6){
-        vendaaud();
+        valorvenda = vendaaud();
+        printf("%.2lf\n", valorvenda);
+        banco();
     }
     else if(moeda==7){
-        vendacad();
+        valorvenda = vendacad();
+        printf("%.2lf\n", valorvenda);
+        banco();
     }
     else{
         printf("Operação Inválida\n");
@@ -353,7 +365,7 @@ int compra(){
     printf("                 Compra de Moeda Extrangeira            \n");
     printf("========================================================\n\n\n");
     printf("Bem vindo! %s!\n\n\n", username);
-    printf("Aqui você poderá utilizar valores  do seu saldo para \ncomprar moedas extrangeiras, confira o nosso catálogo:\n\n\n");
+    printf("Aqui você poderá utilizar o valor do seu saldo para\ncomparar e estimar valores em moedas extrangeiras, confira o nosso catálogo:\n\n\n");
     printf("Dólar Americano (USD) - R$ 5,03...............| Digite 1\n");
     printf("Euro (EUR) - R$ 5,28..........................| Digite 2\n");
     printf("Iene Japonês (JPY) - R$ 0,33..................| Digite 3\n");
@@ -361,31 +373,44 @@ int compra(){
     printf("Franco Suíço (CHF) - R$ 5,58..................| Digite 5\n");
     printf("Dólar Australiano (AUD) - R$ 3,16.............| Digite 6\n");
     printf("Dólar Canadense (CAD) - R$ 3,63...............| Digite 7\n\n\n");
-    printf("Saldo em moedas estrangeiras:\nDólares Americanos: %.2lf USD\nEuros: %.2lf EUR\nIene Japonês: %.2lf JPY\nLibra Esterlina: %.2lf GBP\nFranco Suíço: %.2lf CHF\nDólar Australiano: %.2lf AUD\nDólar Canadense: %.2lf CAD\n\n\n", dolares, euros, ienes, libras, franco, dolaus, dolcad);
 
 
     scanf("%d", &moeda);
 
     if(moeda==1){
-        usd();
+        dolares = usd();
+        printf("%.2lf\n", dolares);
+        banco();
     }
     else if(moeda==2){
-        eur();
+        euros = eur();
+        printf("%.2lf\n", euros);
+        banco();
     }
     else if(moeda==3){
-        jpy();
+        ienes = jpy();
+        printf("%.2lf\n", ienes);
+        banco();
     }
     else if(moeda==4){
-        gbp();
+        libras = gbp();
+        printf("%.2lf\n", libras);
+        banco();
     }
     else if(moeda==5){
-        chf();
+        franco = chf();
+        printf("%.2lf\n", franco);
+        banco();
     }
     else if(moeda==6){
-        aud();
+        dolaus = aud();
+        printf("%.2lf\n", dolaus);
+        banco();
     }
     else if(moeda==7){
-        cad();
+        dolcad = cad();
+        printf("%.2lf\n", dolcad);
+        banco();
     }
     else{
         printf("Operação Inválida\n");
@@ -405,7 +430,8 @@ int conversion(){
     printf("Como podemos lhe ajudar hoje?\n\n");
     printf("Saldo: %.lf                                             \n\n\n", balance);
     printf("Compra de Moeda estrangeira - 1\n");
-    printf("Venda de Moeda Estrangeira - 2\n");
+    printf("Venda de Moeda Estrangeira - 2\n\n\n");
+    printf("Voltar - 3\n");
 
     scanf("%d", &atendimento);
 
@@ -414,6 +440,9 @@ int conversion(){
     }
     else if(atendimento==2){
         venda();
+    }
+    else if(atendimento==3){
+        banco();
     }
     else{
         printf("Operação Inválida!\n");
@@ -481,7 +510,6 @@ int banco()
         }
 
     } while(opcao!=5);
-
 return 0;
 }
 
